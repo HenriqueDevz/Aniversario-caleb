@@ -1,0 +1,326 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;600;700&display=swap');
+
+/* Reset default browser styles and set box-sizing */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+/* Base styles for the page */
+body { 
+    font-family: 'Nunito', sans-serif;
+    background-color: #f5e6c8;
+    color: #3e2008;
+    min-height: 100vh;
+}
+/* Header styles */
+header {
+    background-color: #2d5016;
+    color: #f5e6c8;
+    text-align: center;
+    padding: 24px;
+}
+/* Header title */
+header h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 2.2rem;
+    letter-spacing: 1px;
+}
+/* Header subtitle */
+header p {
+    font-size: 1rem;
+    margin-top: 6px;
+    opacity: 0.85;
+}
+/* Navigation tab bar */
+nav {
+    display: flex;
+    justify-content: center;
+    background-color: #3e2008;
+    gap: 4px;
+    padding: 8px;
+}
+/* Tab buttons */
+.tab-btn {
+    background: transparent;
+    border: none;
+    color: #f5e6c8;
+    font-family: 'Nunito', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 10px 24px;
+    border-radius: 8px 8px 0 0;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+/* Active and hovered tab button */
+.tab-btn:hover,
+.tab-btn.active {
+    background-color: #f5e6c8;
+    color: #3e2008;
+}
+/* Main content area */
+main {
+    max-width: 800px;
+    margin: 24px auto;
+    padding: 0 16px;
+}
+/* Hide tab sections by default */
+.tab-content {
+    display: none;
+}
+.tab-content.active {
+    display: block;
+}
+/* Section header with title and buttons */
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+/* Section title */
+.section-header h2 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.5rem;
+    flex: 1;
+}
+/* Primary button style */
+.btn-primary {
+    background-color: #c8691b;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+/* Secondary button style */
+.btn-secondary {
+    background-color: transparent;
+    color: #3e2008;
+    border: 2px solid #3e2008;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-family: 'Nunito', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+/* Secondary button hover */
+.btn-secondary:hover {
+    background-color: #3e2008;
+    color:#f5e6c8;
+}
+/* Category card */
+.category-card {
+    background-color: white;
+    border-radius: 12px;
+    margin-bottom: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+/* Category card header */
+.category-header {
+    background-color: #2d5016;
+    color: #f5e6c8;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.1rem;
+}
+/* Delete button inside category header */
+.btn-delete {
+    background-color: transparent;
+    border: none;
+    color: #f5e6c8;
+    font-size: 1rem;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: opacity 0.2s;
+}
+/* Delete button hover */
+.btn-delete:hover {
+    opacity: 1;
+}
+/* Items list inside a category */
+.items-list {
+    padding: 8px 0;
+}
+/* Individual item row */
+.item-row {
+    display: flex;
+    align-items: center;
+    padding: 10px 16px;
+    gap: 12px;
+    border-bottom: 1px solid #f5e6c8;
+    transition: background 0.2s;
+}
+/* Item row hover */
+.item-row:hover {
+    background-color: #fdf6e9;
+}
+/* Checked item row */
+.item-row.checked {
+    opacity: 0.5;
+    text-decoration: line-through;
+}
+/* Checkbox inside item row */
+.item-row input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #7ab648;
+    cursor: pointer;
+}
+/* Item name text */
+.item-name {
+    flex: 1;
+    font-size: 0.95rem;
+}
+/* Item quantity badge */
+.item-qty {
+    background-color: #f5e6c8;
+    color: #3e2008;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 12px;
+}
+/* Guest card */
+.guest-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+/* Guest name text */
+.guest-name {
+    flex: 1;
+    font-size: 1rem;
+    font-weight: 600;
+}
+/* Confirmed guest badge */
+.badge-confirmed {
+    background-color: #7ab648;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 12px;
+}
+/* Pending guest badge */
+.badge-pending {
+    background-color: #c8691b;
+    color: white;
+    font-size: 0.8rem;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 12px;
+}
+/* Summary cards container */
+.resumo-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin-top: 16px;
+}
+/* Individual summary card */
+.resumo-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+/* Summary card number */
+.resumo-card span {
+    display: block;
+    font-family: 'Fredoka One', cursive;
+    font-size: 2.5rem;
+    color: #c8691b;
+}
+/* Summary card laber */
+.resumo-card p {
+    font-size: 0.9rem;
+    color: #3e2008;
+    margin-top: 4px;
+}
+/* Progress bar container */
+.progress-bar {
+    background-color: #e0d0b0;
+    border-radius: 20px;
+    height: 14px;
+    margin-top: 24px;
+    overflow: hidden;
+}
+/* Progress bar fill */
+.progress-fill {
+    background-color: #7ab648;
+    height: 100%;
+    border-radius: 20px;
+    transition: width 0.4s ease;
+}
+/* Modal overlay (dark background) */
+.modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0,0,0,0.5);
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+/* Show modal when active */
+.modal.active {
+    display: flex;
+}
+/* Modal content box */
+.modal-content {
+    background-color: #fff8ee;
+    border-radius: 16px;
+    padding: 28px;
+    width: 90%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+/* Modal title */
+.modal-content h3 {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.4rem;
+    color: #2d5016;
+}
+/* Modal inpouts and selects */
+.modal-content input,
+.modal-content select {
+    padding: 10px 14px;
+    border: 2px solid #e0d0b0;
+    border-radius: 8px;
+    font-family: 'Nunito', sans-serif;
+    font-size: 0.95rem;
+    background-color: white;
+    color: #3e2008;
+    outline: none;
+    transition: border 0.2s;
+}
+/* Input focus style */
+.modal-content input:focus,
+.modal-content select:focus {
+    border-color: #2d5016;
+}
+/* Modal buttons row */
+.modal-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: flex-end;
+    margin-top: 4px;
+}

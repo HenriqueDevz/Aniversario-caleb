@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>🦁 Aniversário do Caleb</title>
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <header>
+            <h1>🦁 Aniversário do Caleb</h1>
+            <p>Organize tudo para o grande dia!</p>
+        </header>
+        <nav>
+            <button class="tab-btn active" data-tab="compras" onclick="showTab('compras')">🛒 Compras</button>
+            <button class="tab-btn" data-tab="convidados" onclick="showTab('convidados')">👥 Convidados</button>
+            <button class="tab-btn" data-tab="resumo" onclick="showTab('resumo')">📊 Resumo</button> 
+        </nav>
+        
+        <main>
+            <!-- ABA COMPRAS -->
+            <section id="compras" class="tab-content active">
+                <div class="section-header">
+                    <h2>🛍️ Lista de Compras</h2>
+                    <button class="btn-primary" onclick="openModal('modal-categoria')">+ Categoria</button>
+                    <button class="btn-primary" onclick="openModal('modal-item')">+ Item</button>
+                </div>
+                <div id="lista-compras"></div>
+            </section>
+            <!-- ABA CONVIDADOS -->
+            <section id="convidados" class="tab-content">
+                <div class="section-header">
+                    <h2>👥 Lista de Convidados</h2>
+                    <button class="btn-primary" onclick="openModal('modal-convidado')">+ Convidado</button>
+                </div>
+                <div id="lista-convidados"></div>
+            </section>
+            <!-- ABA RESUMO -->
+            <section id="resumo" class="tab-content">
+                <h2>📊 Resumo Geral</h2>
+                <div id="resumo-conteudo"></div>
+            </section>
+
+        </main>
+        <!-- MODAL CATEGORIA -->
+        <div id="modal-categoria" class="modal">
+            <div class="modal-content">
+                <h3>Nova Categoria</h3>
+                <input type="text" id="input-categoria" placeholder="Nome da categoria">
+                <div class="modal-buttons">
+                    <button class="btn-primary" onclick="addCategoria()">Salvar</button>
+                    <button class="btn-secondary" onclick="closeModal('modal-categoria')">Cancelar</butoon>
+                </div>
+            </div>
+        </div>
+        <!-- MODAL ITEM -->
+        <div id="modal-item" class="modal">
+            <div class="modal-content">
+                <h3>Novo Item</h3>
+                <select id="select-categoria">
+                    <option value="">Selecione uma categoria</option>
+                </select>
+                <input type="text" id="input-item" placeholder="Nome do item">
+                <input type="text" id="input-quantidade" placeholder="Quantidade" min="1" value="1">
+                <input type="text" id="input-notes" placeholder="Observações (opicional)">
+                <div class="modal-buttons">
+                    <button class="btn-primary" onclick="addItem()">Salvar</button>
+                    <button class="btn-secondary" onclick="closeModal('modal-item')">Cancelar</button>
+                </div>
+            </div>
+        </div>
+        <!-- MODAL CONVIDADO -->
+         <div id="modal-convidado" class="modal">
+            <div class="modal-content">
+                <h3>Novo Convidado</h3>
+                <input type="text" id="input-convidado" placeholder="Nome do convidado">
+                <div class="modal-buttons">
+                    <button class="btn-primary" onclick="addConvidado()">Salvar</button>
+                    <button class="btn-secondary" onclick="closeModal('modal-convidado')">Cancelar</button>
+                </div>
+            </div>
+         </div>
+<script src="script.js"></script>
+</body>
+</html>
