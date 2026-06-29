@@ -1,17 +1,21 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../../database');
+const { db } = require('../../database');
 
-router.delete('/guests/:id', (req, res) => {
+router.delete('/guests/:id', async (req, res) => {
     const { id } = req.params
-    const guest = db.prepare('SELECT * FROM guests WHERE id = ?').get(id);
-
-    if (!guest) {
+    const guestResult = await db.execute({
+        sql: 'SELECT * FROM guests WHERE id = ?',
+        args: [id]
+    })
+    const guest = guestResult.rows[0]
+    if (!guest) 
         return res.status(404).json({ error: 'Guest not found'});
-    }
-
-    db.prepare('DELETE FROM guests WHERE id = ?').run(id)
-    res.json({ message: 'Guest deleted sucessfully'});
-});
+    await db.execute({
+        sql: 'DELETE FROM guests WHERE id = ?',
+        args: [id]
+    })
+    res.json({ message: 'Guest deleted sucessfully'})
+})
 
 module.exports = router

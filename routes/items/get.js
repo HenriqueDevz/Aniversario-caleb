@@ -1,14 +1,18 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../../database');
+const { db } = require('../../database');
 
-router.get('/categories', (req, res) => {
-    const categories = db.prepare('SELECT * FROM categories').all();
-    const result = categories.map(category => {
-        const items = db.prepare('SELECT * FROM items WHERE category_id = ?').all(category.id);
-        return { ...category, items };
-    });
-    res.json(result);
-});
+router.get('/categories', async (req, res) => {
+    const result = await db.execute('SELECT * FROM categories')
+    const categories = result.rows
+    const categoriesWithItems = await Promise.all(categories.map(async category => {
+        const itemsResult = await db.execute({
+            sql: 'SELECT * FROM items WHERE category_id = ?',
+            args: [category.id]
+        })
+        return { ...category, items: itemsResult.rows }
+    }))
+    res.json(categoriesWithItems)
+})
 
-module.exports = router;
+module.exports = router

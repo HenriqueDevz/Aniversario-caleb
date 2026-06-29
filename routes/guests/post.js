@@ -1,16 +1,16 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../../database');
+const { db } = require('../../database');
 
-router.post('/guests', (req, res) => {
+router.post('/guests', async (req, res) => {
     const { name } = req.body;
-    if (!name) {
+    if (!name) 
         return res.status(400).json({ error: 'Name a guest is obrigatory' });
-    }
-
-    const stmt = db.prepare('INSERT INTO guests (name) VALUES (?)');
-    const result = stmt.run(name);
-    res.status(201).json({ id: result.lastInsertRowid, name, confirmed: 0 });
-});
+    const result = await db.execute({
+        sql: 'INSERT INTO guests (name) VALUES (?)',
+        args: [name]
+    })
+    res.status(201).json({ id: Number(result.lastInsertRowid), name, confirmed:0 })
+})
 
 module.exports = router;

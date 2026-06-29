@@ -1,7 +1,8 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const db = require('./database');
+const { initDB } = require('./database');
 const app = express();
 
 app.use(cors())
@@ -14,6 +15,8 @@ const guestRoutes = require('./routes/guests/index');
 app.use('/api', itemsRoutes);
 app.use('/api', guestRoutes);
 
+initDB().then(() => {
 app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+    console.log(`Server is running on port ${PORT}`)
+    })
 });
