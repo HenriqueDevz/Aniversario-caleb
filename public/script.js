@@ -6,6 +6,7 @@ function showTab(tab) {
     document.querySelector(`[data-tab="${tab}"]`).classList.add('active');
     document.getElementById(tab).classList.add('active');
     if (tab === 'resumo') loadResumo()
+    if (tab === 'fotos') loadFotos()
 }
 function openModal(id) {
     document.getElementById(id).classList.add('active')
@@ -111,7 +112,7 @@ async function loadConvidados() {
         container.innerHTML += `
         <div class="guest-card">
         <span class="guest-name">👤 ${guest.name}</span>
-        <span class="${guest.confirmed ? 'badge-confirmed' : 'badge-peding'}"
+        <span class="${guest.confirmed ? 'badge-confirmed' : 'badge-pending'}"
           onclick="toggleGuest(${guest.id})" style="cursor:pointer">
           ${guest.confirmed ? '✅ Confirmado' : '⏳ Pendente'}
         </span>
@@ -193,7 +194,65 @@ async function loadResumo() {
     </p>
   `
 }
+
+async function loadFotos () {
+    const res = await fetch('/api/photos');
+    const photos = await res.json();
+    const container = document.getElementById('lista-fotos');
+
+    container.innerHTML = ''
+    if (photos.length === 0) {
+        container.innerHTML = '<p style="opacity:0.6">Nenhuma foto ainda. Envia a primeira!</p>'
+        return
+    }
+
+    photos.forEach(photo => {
+        container.innerHTML += `
+        <div class="foto-card">
+        <img src="${photo.url}" alt="${photo.caption || 'Foto do aniversário'}" onclick="openLightbox('${photo.url}', '${photo.caption || ''}')" style="cursor:pointer">
+        <div class="foto-info">
+        <span class="foto-caption">${photo.caption || ''}</span>
+        <button class="btn-delete" onclick="deleteFoto(${photo.id})" style="color:#3e2008">🗑️</button>
+        </div>
+        </div>
+        `
+    })
+}
+
+async function uploadFoto() {
+    const fileInput = document.getElementById('input-foto');
+    const caption = document.getElementById('input-caption').value.trim()
+    if(!fileInput.files[0])
+        return alert('Select or photo!')
+    const formData = new FormData()
+    formData.append('photo', fileInput.files[0])
+    formData.append('caption', caption)
+
+    await fetch('/api/photos', {
+        method: 'POST',
+        body: formData
+})
+    fileInput.value = ''
+    document.getElementById('input-caption').value = ''
+    loadFotos()
+}
+
+async function deleteFoto(id)  {
+    if(!confirm('Delete for photo?'))
+        return
+
+    await fetch(`/api/photos/${id}`, {method: 'DELETE' })
+    loadFotos()
+}
+
+function openLightbox(url, caption) {
+    document.getElementById('lightbox-img').src = url
+    document.getElementById('lightbox-caption').textContent = caption || ''
+    openModal('modal-lightbox')
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     loadCompras()
     loadConvidados()
+    loadFotos()
 })

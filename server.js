@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const path = require('path');
 const { initDB } = require('./database');
+const photosRouter = require('./routes/photos/index');
 const app = express();
 
 app.use(cors())
@@ -14,6 +15,7 @@ const itemsRoutes = require('./routes/items/index');
 const guestRoutes = require('./routes/guests/index');
 app.use('/api', itemsRoutes);
 app.use('/api', guestRoutes);
+app.use('/api', photosRouter);
 
 initDB().then(() => {
 app.listen(PORT, () => {

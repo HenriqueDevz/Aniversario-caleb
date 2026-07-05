@@ -29,6 +29,16 @@ async function initDB() {
         confirmed INTEGER DEFAULT 0
         )
     `)
+    await db.execute (`
+        CREATE TABLE IF NOT EXISTS photos (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        url TEXT NOT NULL,
+        public_id TEXT NOT NULL,
+        caption TEXT,
+        created_at TEXT DEFAULT (datetime('now'))
+        )
+    `)
 }
+
 
 module.exports = { db, initDB }
