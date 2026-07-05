@@ -8,18 +8,11 @@ cloudinary.config ({
     api_key: process.env.CLOUDINARY_API_KEY, 
     api_secret: process.env.CLOUDINARY_API_SECRET
 })
-console.log('Cloudinary config:', {
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY ? 'SET' : 'NOT SET',
-  api_secret: process.env.CLOUDINARY_API_SECRET ? 'SET' : 'NOT SET'
-})
 
 const multer = require('multer');
 const upload = multer({ storage: multer.memoryStorage() });
 
 router.post('/photos', upload.single('photo'), async (req, res) => {
-    console.log('POST /photos chamado')
-    console.log('File:', req.file ? 'recebido' : 'não recebido')
     if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
     const caption = req.body.caption || null
     
