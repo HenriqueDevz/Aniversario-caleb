@@ -15,7 +15,7 @@
             <button class="tab-btn active" data-tab="compras" onclick="showTab('compras')">🛒 Compras</button>
             <button class="tab-btn" data-tab="convidados" onclick="showTab('convidados')">👥 Convidados</button>
             <button class="tab-btn" data-tab="resumo" onclick="showTab('resumo')">📊 Resumo</button>
-            <button class="tab-btn" data-tab="fotos" onclick="showTab('fotos')">📸 Fotos</button>"
+            <button class="tab-btn" data-tab="fotos" onclick="showTab('fotos')">📸 Fotos</button>
         </nav>
         
         <main>
@@ -44,14 +44,11 @@
             <!-- ABA FOTOS -->
              <section id="fotos" class="tab-content">
                 <div class="section-header">
-                    <h2>📸 Fotos do Aniversário</h2>
+                    <h2>📸 Álbum do Caleb</h2>
+                    <button class="btn-primary" onclick="openModal('modal-photo-categoria')">+ Categoria</button>
+                    <button class="btn-primary" onclick="openModal('modal-upload-foto')">+ Foto</button>
                 </div>
-                <div class="upload-box">
-                    <input type="file" id="input-foto" accept="image/*">
-                    <input type="text" id="input-caption" placeholder="Legenda(opcional)">
-                    <button class="btn-primary" onclick="uploadFoto()">📤 Enviar Foto</button>
-                </div>
-                <div id="lista-fotos" class="fotos-grid"></div>
+                <div id="lista-photo-categorias"></div>
              </section>
 
         </main>
@@ -62,7 +59,7 @@
                 <input type="text" id="input-categoria" placeholder="Nome da categoria">
                 <div class="modal-buttons">
                     <button class="btn-primary" onclick="addCategoria()">Salvar</button>
-                    <button class="btn-secondary" onclick="closeModal('modal-categoria')">Cancelar</butoon>
+                    <button class="btn-secondary" onclick="closeModal('modal-categoria')">Cancelar</button>
                 </div>
             </div>
         </div>
@@ -100,6 +97,32 @@
                 <p id="lightbox-caption"></p>
             </div>
         </div>
+        <!-- MODAL CATEGORIA DE FOTO -->
+         <div id="modal-photo-categoria" class="modal">
+            <div class="modal-content">
+                <h3>Nova Categoria de Fotos</h3>
+                <input type="text" id="input-photo-categoria" placeholder="Ex: Mês 1 - Tema Cordeirinho">
+                <div class="modal-buttons">
+                    <button class="btn-primary" onclick="addPhotoCategoria()">Salvar</button>
+                    <button class="btn-secondary" onclick="closeModal('modal-photo-categoria')">Cancelar</button>
+                </div>
+            </div>
+         </div>
+         <!-- MODAL UPLOAD DE FOTO -->
+          <div id="modal-upload-foto" class="modal">
+            <div class="modal-content">
+                <h3>Nova Foto</h3>
+                <select id="select-photo-categoria">
+                    <option value="">Selecione uma Caterogia</option>
+                </select>
+                <input type="file" id="input-foto" accept="image/*">
+                <input type="text" id="input-caption" placeholder="Legenda (opcional)">
+                <div class="modal-buttons">
+                    <button class="btn-primary" onclick="uploadFoto()">📤Enviar</button>
+                    <button class="btn-secondary" onclick="closeModal('modal-upload-foto')">Cancelar</button>
+                </div>
+            </div>
+          </div>
 <script src="script.js"></script>
 </body>
 </html>

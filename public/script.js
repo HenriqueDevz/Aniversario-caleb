@@ -196,37 +196,83 @@ async function loadResumo() {
 }
 
 async function loadFotos () {
-    const res = await fetch('/api/photos');
-    const photos = await res.json();
-    const container = document.getElementById('lista-fotos');
+    const res = await fetch('/api/photo-categories');
+    const categories = await res.json();
+    const container = document.getElementById('lista-photo-categorias');
 
     container.innerHTML = ''
-    if (photos.length === 0) {
+    const select = document.getElementById('select-photo-categoria')
+    select.innerHTML = '<option value="">Selecione uma categoria</option>'
+
+    if (categories.length === 0) {
         container.innerHTML = '<p style="opacity:0.6">Nenhuma foto ainda. Envia a primeira!</p>'
         return
     }
 
-    photos.forEach(photo => {
+    categories.forEach(category => {
+        select.innerHTML += `<option value="${category.id}">${category.name}</option>`
+        
+        const photosHTML = category.photos.length > 0
+        ? `<div class="fotos-grid">
+        ${category.photos.map(photo => `
+            <div class="foto-card">
+                <img src="${photo.url}" alt="${photo.caption || 'Foto do Caleb'}" onclick="openLightbox('${photo.url}', '${photo.caption || ''}')" style="cursor:pointer">
+                <div class="foto-info">
+                        <span class="foto-caption">${photo.caption || ''}</span>
+                        <button class="btn-delete" onclick="deleteFoto(${photo.id})" style="color:#3a2008">🗑️</button>
+                </div>
+            </div>
+         `).join('')}
+        </div>`
+        : '<p style="padding:12px;opacity:0.6">Nenhuma foto nesta categoria</p>'
+
         container.innerHTML += `
-        <div class="foto-card">
-        <img src="${photo.url}" alt="${photo.caption || 'Foto do aniversário'}" onclick="openLightbox('${photo.url}', '${photo.caption || ''}')" style="cursor:pointer">
-        <div class="foto-info">
-        <span class="foto-caption">${photo.caption || ''}</span>
-        <button class="btn-delete" onclick="deleteFoto(${photo.id})" style="color:#3e2008">🗑️</button>
-        </div>
-        </div>
-        `
+        <div class="category-card">
+            <div class="category-header">
+                <span>📷${category.name}</span>
+                <button class="btn-delete" onclick="deletePhotoCategoria(${category.id})">🗑️</button>
+            </div>
+            <div class="items-list">
+                ${photosHTML}
+            </div>
+        </div>`
+        
     })
 }
 
+async function addPhotoCategoria() {
+    const name = document.getElementById('input-photo-categoria').value.trim()
+    if (!name) 
+        return alert('Digit or name category!')
+
+    await fetch('/api/photo-categories', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name })
+    })
+    document.getElementById('input-photo-categoria').value = ''
+    closeModal('modal-photo-categoria')
+    loadFotos()
+}
+
+async function deletePhotoCategoria(id) {
+    if (!confirm('Deletar categoria e todas as suas fotos?')) return
+    await fetch (`/api/photo-categories/${id}`, { method: 'DELETE' })
+    loadFotos()
+}
 async function uploadFoto() {
     const fileInput = document.getElementById('input-foto');
     const caption = document.getElementById('input-caption').value.trim()
+    const photo_category_id = document.getElementById('select-photo-categoria').value
+    if(!photo_category_id)
+        return alert('Select of category!')
     if(!fileInput.files[0])
         return alert('Select or photo!')
+
     const formData = new FormData()
     formData.append('photo', fileInput.files[0])
     formData.append('caption', caption)
+    formData.append('photo_category_id', photo_category_id)
 
     await fetch('/api/photos', {
         method: 'POST',
@@ -234,13 +280,13 @@ async function uploadFoto() {
 })
     fileInput.value = ''
     document.getElementById('input-caption').value = ''
+    document.getElementById('select-photo-categoria').value = ''
+    closeModal('modal-upload-foto')
     loadFotos()
 }
 
 async function deleteFoto(id)  {
-    if(!confirm('Delete for photo?'))
-        return
-
+    if(!confirm('Delete for photo?')) return
     await fetch(`/api/photos/${id}`, {method: 'DELETE' })
     loadFotos()
 }

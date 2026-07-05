@@ -29,13 +29,21 @@ async function initDB() {
         confirmed INTEGER DEFAULT 0
         )
     `)
+    await db.execute(`
+        CREATE TABLE IF NOT EXISTS photo_categories (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL
+        )
+    `)
     await db.execute (`
         CREATE TABLE IF NOT EXISTS photos (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
+        photo_category_id INTEGER NOT NULL,
         url TEXT NOT NULL,
         public_id TEXT NOT NULL,
         caption TEXT,
-        created_at TEXT DEFAULT (datetime('now'))
+        created_at TEXT DEFAULT (datetime('now')),
+        FOREIGN KEY (photo_category_id) REFERENCES photo_categories(id)
         )
     `)
 }
