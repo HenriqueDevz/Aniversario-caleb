@@ -20,28 +20,34 @@ const upload = multer({ storage: multer.memoryStorage() });
 router.post('/photos', upload.single('photo'), async (req, res) => {
     if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
     const caption = req.body.caption || null
-    const uploadResult = await new Promise((resolve, reject) => {
-        const stream = cloudinary.uploader.upload_stream(
-        {folder: 'aniversario-caleb' },
-        (error, result) => {
-            if (error) reject(error)
-                else resolve(result)
-        }
-    )
-    stream.end(req.file.buffer)
-})
+    
+    try {
+        const uploadResult = await new Promise((resolve, reject) => {
+            const stream = cloudinary.uploader.upload_stream(
+                { folder: 'aniversario-caleb' },
+                (error, result) => {
+                    if (error) reject(error)
+                    else resolve(result)
+                }
+            )
+            stream.end(req.file.buffer)
+        })
 
-const result = await db.execute({
-    sql: 'INSERT INTO photos (url, public_id, caption) VALUES (?, ?, ?)',
-    args: [uploadResult.secure_url, uploadResult.public_id, caption]
-})
+        const result = await db.execute({
+            sql: 'INSERT INTO photos (url, public_id, caption) VALUES (?, ?, ?)',
+            args: [uploadResult.secure_url, uploadResult.public_id, caption]
+        })
 
-res.status(201).json({
-    id: Number(result.lastInsertRowid),
-    url: uploadResult.secure_url,
-    public_id: uploadResult.public_id,
-    caption
-    })
+        res.status(201).json({
+            id: Number(result.lastInsertRowid),
+            url: uploadResult.secure_url,
+            public_id: uploadResult.public_id,
+            caption
+        })
+    } catch (err) {
+        console.error('Upload error:', err.message || JSON.stringify(err))
+        res.status(500).json({ error: err.message })
+    }
 })
 
 module.exports = router;
