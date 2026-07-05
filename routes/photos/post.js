@@ -18,6 +18,8 @@ const multer = require('multer');
 const upload = multer({ storage: multer.memoryStorage() });
 
 router.post('/photos', upload.single('photo'), async (req, res) => {
+    console.log('POST /photos chamado')
+    console.log('File:', req.file ? 'recebido' : 'não recebido')
     if (!req.file) return res.status(400).json({ error: 'No file uploaded' });
     const caption = req.body.caption || null
     

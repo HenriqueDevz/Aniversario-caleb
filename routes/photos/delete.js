@@ -10,6 +10,7 @@ cloudinary.config ({
 })
 
 router.delete('/photos/:id', async (req, res) => {
+    console.log('DELETE /photos chamado, id:', id)
     const { id } = req.params;
     const photoResult = await db.execute({
         sql: 'SELECT * FROM photos WHERE id = ?',
