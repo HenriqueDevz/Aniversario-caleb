@@ -265,19 +265,22 @@ async function uploadFoto() {
     const caption = document.getElementById('input-caption').value.trim()
     const photo_category_id = document.getElementById('select-photo-categoria').value
     if(!photo_category_id)
-        return alert('Select of category!')
-    if(!fileInput.files[0])
+        return alert('Select or category!')
+    if(!fileInput.files.length)
         return alert('Select or photo!')
+    const files = Array.from(fileInput.files)
 
+await Promise.all(files.map(async file => {
     const formData = new FormData()
-    formData.append('photo', fileInput.files[0])
+    formData.append('photo', file)
     formData.append('caption', caption)
     formData.append('photo_category_id', photo_category_id)
 
     await fetch('/api/photos', {
         method: 'POST',
         body: formData
-})
+    })
+}))
     fileInput.value = ''
     document.getElementById('input-caption').value = ''
     document.getElementById('select-photo-categoria').value = ''
