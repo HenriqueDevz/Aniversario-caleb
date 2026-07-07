@@ -10,7 +10,10 @@ cloudinary.config ({
 })
 
 const multer = require('multer');
-const upload = multer({ storage: multer.memoryStorage() });
+const upload = multer({ 
+    storage: multer.memoryStorage(),
+    limits: { fileSize: 100 * 1024 * 1024 }
+});
 
 router.post('/photos', upload.single('photo'), async (req, res) => {
     if (!req.file) 
@@ -18,10 +21,12 @@ router.post('/photos', upload.single('photo'), async (req, res) => {
     const { photo_category_id, caption } = req.body
     if(!photo_category_id)
         return res.status(400).json({ error: 'Category is obrigatory' })
+    const type = req.file.mimetype.startsWith('video/') ? 'video': 'image'
+    const resourceType = type === 'video' ? 'video' : 'image'
     try {
         const uploadResult = await new Promise((resolve, reject) => {
             const stream = cloudinary.uploader.upload_stream(
-                { folder: 'aniversario-caleb' },
+                { folder: 'aniversario-caleb', resource_type: resourceType },
                 (error, result) => {
                     if (error) reject(error)
                     else resolve(result)
@@ -31,8 +36,8 @@ router.post('/photos', upload.single('photo'), async (req, res) => {
         })
 
         const result = await db.execute({
-            sql: 'INSERT INTO photos (photo_category_id, url, public_id, caption) VALUES (?, ?, ?, ?)',
-            args: [photo_category_id, uploadResult.secure_url, uploadResult.public_id, caption || null]
+            sql: 'INSERT INTO photos (photo_category_id, url, public_id, caption, type) VALUES (?, ?, ?, ?, ?)',
+            args: [photo_category_id, uploadResult.secure_url, uploadResult.public_id, caption || null, type]
         })
 
         res.status(201).json({
@@ -40,7 +45,8 @@ router.post('/photos', upload.single('photo'), async (req, res) => {
             photo_category_id,
             url: uploadResult.secure_url,
             public_id: uploadResult.public_id,
-            caption: caption || null
+            caption: caption || null,
+            type
         })
     } catch (err) {
         console.error('Upload error:', err.message || JSON.stringify(err))

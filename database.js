@@ -42,6 +42,7 @@ async function initDB() {
         url TEXT NOT NULL,
         public_id TEXT NOT NULL,
         caption TEXT,
+        type TEXT DEFAULT 'image',
         created_at TEXT DEFAULT (datetime('now')),
         FOREIGN KEY (photo_category_id) REFERENCES photo_categories(id)
         )

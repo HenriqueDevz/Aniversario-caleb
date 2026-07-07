@@ -216,7 +216,10 @@ async function loadFotos () {
         ? `<div class="fotos-grid">
         ${category.photos.map(photo => `
             <div class="foto-card">
-                <img src="${photo.url}" alt="${photo.caption || 'Foto do Caleb'}" onclick="openLightbox('${photo.url}', '${photo.caption || ''}')" style="cursor:pointer">
+                ${photo.type === 'video'
+                    ? `<video src="${photo.url}" controls style="width:100%;height:200px;object-fit:cover;border-radius:8px 8px 0 0"></video>`
+                    : `<img src="${photo.url}" alt="${photo.caption || 'Foto do Caleb'}" onclick="openLightbox('${photo.url}', '${photo.caption || ''}')" style="cursor:pointer">`
+                }
                 <div class="foto-info">
                         <span class="foto-caption">${photo.caption || ''}</span>
                         <button class="btn-delete" onclick="deleteFoto(${photo.id})" style="color:#3a2008">🗑️</button>
